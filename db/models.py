@@ -1,6 +1,6 @@
-from sqlalchemy.sql.schema import ForeignKey
+from datetime import datetime
 from .database import Base
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 
 
@@ -22,3 +22,14 @@ class DbPost(Base):
     timestamp = Column(DateTime)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship('DbUser', back_populates='items')
+    comments = relationship("DbComment", back_populates="post")
+
+
+class DbComment(Base):
+    __tablename__ = 'comment'
+    id = Column(Integer, primary_key=True, index=True)
+    text = Column(String)
+    username = Column(String)
+    timestamp = Column(DateTime)
+    post_id = Column(Integer, ForeignKey('post.id'))
+    post = relationship("DbPost", back_populates="comments")
