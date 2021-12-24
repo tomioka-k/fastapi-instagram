@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import APIRouter, status
 from fastapi.exceptions import HTTPException
 from fastapi.param_functions import Depends
@@ -22,3 +23,8 @@ def create(request: PostBase, db: Session = Depends(get_db)):
             detail="Parameter image_url_type can only take values 'absolute' or 'relative'."
         )
     return db_post.create(db, request)
+
+
+@router.get('/all', response_model=List[PostDisplay])
+def posts(db: Session = Depends(get_db)):
+    return db_post.get_all(db)
