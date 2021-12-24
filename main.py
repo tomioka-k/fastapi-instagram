@@ -1,15 +1,16 @@
 from os import name
 from fastapi import FastAPI
-from fastapi import staticfiles
 from db import models
 from db.database import engine
 from routers import user, post
+from auth import authentication
 from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
 
 app.include_router(user.router)
 app.include_router(post.router)
+app.include_router(authentication.router)
 
 
 @app.get("/")
